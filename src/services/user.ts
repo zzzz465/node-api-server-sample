@@ -1,5 +1,5 @@
 import { createHash, createHmac } from 'crypto'
-import * as User from '@/models/user'
+import * as User from '../models/user'
 
 const secret = 'secret_key'
 
@@ -9,12 +9,15 @@ function hash(data: string) {
 
 export async function registerUser(email: string, password: string) {
     const hashed = hash(password)
-    return User.registerUser(email, password)
+    return User.registerUser(email, hashed)
 }
 
 export async function validatePassword(email: string, password: string) {
     const result = await User.getUser(email)
-    const hashed = hash(password)
-
-    return hashed === result.encrypted
+    if (result) {
+        const hashed = hash(password)
+        return hashed === result.encrypted
+    } else {
+        return false
+    }
 }

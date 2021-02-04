@@ -6,21 +6,24 @@ export async function registerUser(email: string, encrypted: string): Promise<bo
     const connection = await getConnection()
     await connection.beginTransaction()
     try {
+        const query_string = 'SELECT 1 FROM users WHERE email = ? LIMIT 1'
         const rows = await connection.query(
-            'SELECT EXISTS(SELECT 1 FROM users WHERE email = (?), password = (?) LIMIT 1)',
-            [email, encrypted]
+            query_string,
+            [email]
         ) as any[]
 
-        const notExist = rows.length == 1 // meta always exists.
+        const notExist = rows.length === 0 // meta always exists.
         if (notExist) {
-            const rows = await connection.query(
-                'INSERT INTO usere VALUES (? ?)',
+            const res = await connection.query(
+                'INSERT INTO users VALUES (?, UNHEX(?))',
                 [email, encrypted]
             )
 
-            success = rows.affectedRows == 1
+            connection.commit()
+            success = res.affectedRows == 1
         }
     } catch (err) {
+        console.error(err)
         error(err)
     } finally {
         connection.release()
@@ -34,10 +37,10 @@ export async function getUser(email: string): Promise<any | undefined> {
     const connection = await getConnection()
     try {
         const result = await connection.query(
-            'SELECT * FROM users WHERE email = (?)', 
+            'SELECT * FROM users WHERE email = (?) LIMIT 1',
             [email]
         ) as any[]
-        if (result.length == 2)
+        if (result.length == 1)
             object = { email: result[0].email, encrypted: result[0].password }
     } catch (err) {
         error(err)

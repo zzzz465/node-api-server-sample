@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import * as User from '@/services/user'
+import * as User from '../../services/user'
 import { sign } from 'jsonwebtoken'
 
 const SECRET_KEY = 'secret_key???'

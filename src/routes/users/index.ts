@@ -1,7 +1,10 @@
+import { Container } from 'typedi'
 import { Router } from 'express'
-import * as User from '../../services/user'
+import UserService from '../../services/user'
 import * as jwt from '../../middlewares/jwt'
 import * as auth from '../../middlewares/auth'
+
+const User = Container.get(UserService)
 
 const router = Router()
 

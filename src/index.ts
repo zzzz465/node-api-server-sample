@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import App, { json } from 'express'
 import { createServer } from 'http'
 import cookieParser from 'cookie-parser'

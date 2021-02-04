@@ -13,6 +13,13 @@
 				"isDefault": true
 			},
 			"label": "tsc: 감시 - tsconfig.json"
+		},
+		{
+			"type": "gulp",
+			"task": "watchAPI",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "watch apidoc with Gulp"
 		}
 	]
 }

@@ -21,9 +21,9 @@ router.post('/login', async (req, res) => {
 
         if (isValid) {
             // const jwt = { email }
-            const signed = jwt.sign({ email }, { expiresIn: '1h' })
+            const signed = jwt.sign({ email }, { expiresIn: '5min' })
             res.cookie('Authorization', `Bearer ${signed}`)
-            res.status(200).end()
+            res.status(201).end()
         } else {
             res.status(400).json({ message: 'wrong email or password' }).end()
         }

@@ -7,7 +7,7 @@ import Users from './routes/users'
 const server = createServer()
 server.listen(80)
 
-const app = App()
+export const app = App() // for testing
 app.use(json())
 app.use(cookieParser())
 app.use('/users', Users)

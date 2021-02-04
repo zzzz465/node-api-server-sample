@@ -1,10 +1,11 @@
 import { createHash, createHmac } from 'crypto'
 import * as User from '../models/user'
+import * as jwt from '../middlewares/jwt'
 
-const secret = 'secret_key'
+const HASH_SECRET = 'HASH_SECRET_VAL'
 
 function hash(data: string) {
-    return createHmac('sha256', secret).update(data).digest('hex')
+    return createHmac('sha256', HASH_SECRET).update(data).digest('hex')
 }
 
 export async function registerUser(email: string, password: string) {
@@ -16,7 +17,7 @@ export async function validatePassword(email: string, password: string) {
     const result = await User.getUser(email)
     if (result) {
         const hashed = hash(password)
-        return hashed === result.encrypted
+        return hashed.toLowerCase() === (<string>result.encrypted).toLowerCase()
     } else {
         return false
     }

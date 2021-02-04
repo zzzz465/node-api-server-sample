@@ -37,11 +37,11 @@ export async function getUser(email: string): Promise<any | undefined> {
     const connection = await getConnection()
     try {
         const result = await connection.query(
-            'SELECT * FROM users WHERE email = (?) LIMIT 1',
+            'SELECT email, HEX(password) AS encrypted FROM users WHERE email = (?) LIMIT 1',
             [email]
         ) as any[]
         if (result.length == 1)
-            object = { email: result[0].email, encrypted: result[0].password }
+            object = { email: result[0].email, encrypted: result[0].encrypted }
     } catch (err) {
         error(err)
     } finally {

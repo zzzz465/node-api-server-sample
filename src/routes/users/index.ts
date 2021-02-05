@@ -27,7 +27,7 @@ export default function () {
                 // const jwt = { email }
                 const signed = jwt.sign({ email }, { expiresIn: '5min' })
                 res.cookie('Authorization', `Bearer ${signed}`)
-                res.status(201).end()
+                res.status(200).end()
             } else {
                 res.status(400).json({ message: 'wrong email or password' }).end()
             }
@@ -36,7 +36,6 @@ export default function () {
         }
     })
 
-    // 아 이거 문서질 왜케 힘드냐?
     /**
      * @api {POST} /users/register
      * @apiname register
@@ -52,7 +51,7 @@ export default function () {
             const { email, password } = req.body
             const success = await User.registerUser(email, password)
             if (success)
-                res.status(200).end()
+                res.status(201).end()
             else
                 res.status(400).json({ message: 'email already exists' }).end()
         } else {

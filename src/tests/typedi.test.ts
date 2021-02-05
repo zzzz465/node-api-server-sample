@@ -1,28 +1,28 @@
 import 'reflect-metadata'
-import { Container, Inject, InjectMany, Service } from 'typedi'
+import { injectable, inject, container } from 'tsyringe'
 
 abstract class ParentClass {
     abstract foo(): string
 }
 
-@Service("ChildClass")
+@injectable()
 class ChildClass implements ParentClass {
     foo() {
         return '42'
     }
 }
 
-@Service("OtherChildClass")
+@injectable()
 class OtherChildClass implements ParentClass {
     foo() {
         return '420'
     }
 }
 
-@Service()
+@injectable()
 class DIClass {
     constructor(
-        @Inject("ChildClass")
+        @inject(ChildClass)
         private fooClass: ParentClass
     ) { }
 
@@ -32,7 +32,7 @@ class DIClass {
 }
 
 test('typedi testing', () => {
-    const diClassInstance = Container.get(DIClass)
+    const diClassInstance = container.resolve(DIClass)
     const text = diClassInstance.print()
     expect(text).toBe('42')
 })

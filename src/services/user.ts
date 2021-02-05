@@ -1,14 +1,14 @@
-import { Container, Inject, Service } from 'typedi'
+import { injectable, inject } from 'tsyringe'
 import { createHash, createHmac } from 'crypto'
-import * as jwt from '../middlewares/jwt'
 import IUserModel from '../models/interfaces/IUserModel'
+import UserModel from '../models/user'
 
 const HASH_SECRET = 'HASH_SECRET_VAL'
 
-@Service()
+@injectable()
 export default class UserService {
     constructor(
-        @Inject('UserModel')
+        @inject(UserModel)
         private userModel: IUserModel
     ) { }
 
@@ -17,7 +17,7 @@ export default class UserService {
     }
 
     registerUser(email: string, password: string) {
-        const hashed = this.hash(email)
+        const hashed = this.hash(password)
         return this.userModel.registerUser(email, hashed)
     }
 

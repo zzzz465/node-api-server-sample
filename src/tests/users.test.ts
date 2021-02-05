@@ -1,9 +1,10 @@
 import 'reflect-metadata'
-import { Container } from 'typedi'
+import { container, inject } from 'tsyringe'
 import request from 'supertest'
 import { app } from '../index'
 import IUserModel from '../models/interfaces/IUserModel'
 import UserService from '../services/user'
+import UserModel from '../models/user'
 
 describe('API /users/login', () => {
     const mockUserModel = {
@@ -23,9 +24,10 @@ describe('API /users/login', () => {
             }
         }
     }
-    Container.set('UserModel', mockUserModel)
 
-    const userService = Container.get(UserService)
+    container.register(UserModel, { useValue: mockUserModel })
+
+    const userService = container.resolve(UserService)
     test('login should reject unknown email', async () => {
         const flag = await userService.validatePassword('unknown', 'password')
 
@@ -43,6 +45,4 @@ describe('API /users/login', () => {
 
         expect(flag).toBeTruthy()
     })
-
-    Container.reset()
 })

@@ -1,8 +1,5 @@
 import 'reflect-metadata'
 
-import './models/user'
-import './models/db'
-
 import App, { json } from 'express'
 import { createServer } from 'http'
 import cookieParser from 'cookie-parser'
@@ -15,6 +12,6 @@ server.listen(80)
 export const app = App() // for testing
 app.use(json())
 app.use(cookieParser())
-app.use('/users', Users)
+app.use('/users', Users())
 
 app.listen(server)

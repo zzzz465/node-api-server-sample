@@ -3,7 +3,7 @@ import { error } from 'winston'
 import { Service } from 'typedi'
 import IUserModel from './interfaces/IUserModel'
 
-@Service()
+@Service('UserModel')
 export default class UserModel implements IUserModel {
     async registerUser(email: string, encrypted: string): Promise<boolean> {
         let success = false

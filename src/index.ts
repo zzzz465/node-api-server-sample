@@ -1,4 +1,8 @@
 import 'reflect-metadata'
+
+import './models/user'
+import './models/db'
+
 import App, { json } from 'express'
 import { createServer } from 'http'
 import cookieParser from 'cookie-parser'
